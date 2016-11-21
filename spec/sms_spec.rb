@@ -2,11 +2,17 @@ require "sms"
 
 describe SMS do
   subject(:sms) {described_class.new}
-  let(:sms_d) {double :sms}
+  let(:client) { double(:client, messages: messages)}
+  let(:messages) { double(:messages) }
   context "when #text_message it" do
     it "should send a message to 07414991997" do
-      expect(sms_d).to receive(:text_message).with("This is your first message")
-      sms_d.text_message("This is your first message")
+      args = {
+        :from => '123',
+        :to => '321',
+        :body => "Thank you! Your order can be delivered before 18:52",
+      }
+      expect(messages).to receive(:create).with(args)
+      sms.text_message(args)
      end
   end
 

@@ -15,4 +15,9 @@ class Menu
     @dishes.delete(dish.to_sym)
   end
 
+  def print
+    @dishes.map do |item,price|
+      "%s £%d" % [item.to_s.capitalize, price]
+    end.join(", ")
+  end
 end

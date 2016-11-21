@@ -6,13 +6,14 @@ require_relative 'sms.rb'
 
 class TakeAway
 
-  def initialize(order_klass,sms_klass)
-    @order = order_klass.new()
-    @sms = sms_klass.new
+  def initialize(menu: , order: , sms:)
+    @order = order
+    @sms = sms
+    @menu = menu
   end
 
-  def menu
-    @order.menu
+  def print_menu
+    menu.print
   end
 
   def add_to_basket(dish,number)
@@ -24,10 +25,6 @@ class TakeAway
     my_price == total_price
   end
 
-  def total_price
-    @order.total
-  end
-
   def checkout(value)
     raise "The price doesn't match: enter the correct value." unless check_price(value)
     reset_order
@@ -35,6 +32,7 @@ class TakeAway
   end
 
   private
+    attr_reader :menu
 
     def send_message(message)
       @sms.text_message(message)
@@ -42,6 +40,10 @@ class TakeAway
 
     def reset_order
       @order.reset_order
+    end
+
+    def total_price
+      @order.total
     end
 
 

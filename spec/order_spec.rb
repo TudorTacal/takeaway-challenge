@@ -1,12 +1,12 @@
 require "order"
 
 describe Order do
-  subject(:order) {described_class.new  }
+  subject(:order) {described_class.new}
 
   it "should have menu method that displays a list of dishes with prices" do
     expect(order.menu).to eq ({chicken:5, beef:6, pork: 7})
   end
-  context "when #add it" do
+  context "when #add it" doß
     it "should take 2 arguments, the dish name and number of portions" do
       expect(order).to respond_to(:add).with(2).arguments
     end
@@ -28,7 +28,7 @@ describe Order do
   context "when #reset it" do
     it "should remove all dishes from the added_dishes array" do
       order.add("chicken",5)
-      expect(order.reset_order).to eq []  
+      expect(order.reset_order).to eq []
     end
   end
 

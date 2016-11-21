@@ -2,11 +2,15 @@
 require "take_away"
 
 describe TakeAway do
-  subject(:take_away) {described_class.new(Order,SMS)}
-
+  subject(:take_away) {described_class.new(menu: menu, order: order,sms: sms)}
+  let(:order) {instance_double("Order", menu: {chicken: 5, beef: 6, pork: 7} )}
+  let(:sms) {instance_double("SMS")}
+  let(:menu) {double(:menu, print: printed_menu )}
+  let(:printed_menu) {{chicken: 5, beef: 6, pork: 7}}
+  
   context "when #menu it" do
     it "should display a list of dishes with prices" do
-      expect(take_away.menu).to eq ({chicken: 5, beef: 6, pork: 7})
+      expect(take_away.print_menu).to eq ({chicken: 5, beef: 6, pork: 7})
     end
   end
 
@@ -29,10 +33,6 @@ describe TakeAway do
       it "should raise an error if the price introduced is not the same as the total price of the dishes" do
         take_away.add_to_basket("chicken",5)
         expect{take_away.checkout(26)}.to raise_error "The price doesn't match: enter the correct value."
-      end
-      it "should not raise an error if the prices match" do
-        take_away.add_to_basket("chicken",5)
-        expect{take_away.checkout(25)}.to_not raise_error
       end
       it "should send an confirmation message" do
         take_away.add_to_basket("chicken",5)
