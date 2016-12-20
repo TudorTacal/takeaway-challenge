@@ -1,12 +1,15 @@
 # this class is responsible for displaying a menu, adding dishes with quantities and finalizing the order by sending an sms.
 require 'dotenv'
 Dotenv.load
-require_relative "order"
-require_relative 'sms.rb'
+require_relative "./order"
+require_relative './sms.rb'
+require_relative './menu.rb'
 
 class TakeAway
 
-  def initialize(menu: , order: , sms:)
+  attr_reader :menu
+
+  def initialize(menu:, order: , sms:)
     @order = order
     @sms = sms
     @menu = menu

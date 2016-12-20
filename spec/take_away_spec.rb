@@ -3,14 +3,19 @@ require "take_away"
 
 describe TakeAway do
   subject(:take_away) {described_class.new(menu: menu, order: order,sms: sms)}
-  let(:order) {instance_double("Order", menu: {chicken: 5, beef: 6, pork: 7} )}
+  let(:order) {instance_double("Order", menu: {chicken: 5, beef: 6, pork: 7})}
   let(:sms) {instance_double("SMS")}
   let(:menu) {double(:menu, print: printed_menu )}
-  let(:printed_menu) {{chicken: 5, beef: 6, pork: 7}}
-  
+  let(:printed_menu) {"Chicken £5, Beef £6, Pork £7"}
+
+  before  do
+    allow(order).to receive(:add)
+    allow(order).to receive(:total).and_return 60
+    allow(order).to receive(:reset_order)
+  end
   context "when #menu it" do
     it "should display a list of dishes with prices" do
-      expect(take_away.print_menu).to eq ({chicken: 5, beef: 6, pork: 7})
+      expect(take_away.print_menu).to eq ("Chicken £5, Beef £6, Pork £7")
     end
   end
 
@@ -36,7 +41,8 @@ describe TakeAway do
       end
       it "should send an confirmation message" do
         take_away.add_to_basket("chicken",5)
-        expect(take_away.checkout(25)).to eq "Your order will arrive at 17:22."
+        take_away.add_to_basket("pork",5)
+        expect(take_away.checkout(60)).to eq "Your order will arrive at 17:22."
       end
     end
 
